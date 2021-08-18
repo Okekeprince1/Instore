@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "Instore",
+    "slug": "Instore",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "facebookAppId": "284670935860439",
+    "facebookScheme": "fb284670935860439",
+    "extra": {
+      "googleAppId": {
+        "ios": "1086968300642-3skbg0svkt0dm76v6akv8g3ugofpved9.apps.googleusercontent.com",
+        "android": "1086968300642-e8skq57nt4rdtqbuuaoi9jpbte15n5i7.apps.googleusercontent.com"
+      }
+    }
+  }
+}

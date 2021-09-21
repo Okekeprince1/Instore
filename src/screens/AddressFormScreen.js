@@ -21,6 +21,11 @@ export default class AddressFormScreen extends Component {
         headerLeft: <CloseBtn left size={25} onPress={() => navigation.goBack(null)} />
     })
 
+    state = {
+        address : null,
+        instructions: ""
+    }
+
     @observable
     streetName = '';
 
@@ -33,8 +38,8 @@ export default class AddressFormScreen extends Component {
     @observable
     province = '';
 
-    @observable
-    address = null;
+    // @observable
+    // address = null;
 
     @observable
     isSaving = false
@@ -53,23 +58,29 @@ export default class AddressFormScreen extends Component {
         this.props.navigation.goBack(null);
 
         const address = buildAddress(value);
-
+        address.instructions = this.state.instructions;
         this.streetName = address.street;
         this.postalCode = address.postalCode;
         this.city = address.city;
 
-        this.address = address;
+        this.setState({address: address})
     }
 
     @action.bound
      async saveAddress () {
          this.isSaving = true
         try {
-            await this.props.authStore.info.createAddress(this.address)
+            console.log("saving address");
+            console.log("address",this.state.address);
+            await this.props.authStore.info.createAddress(this.state.address)
             this.props.navigation.goBack(null)
         } catch (error) {
             console.error(error)
         }
+    }
+
+    _onChangeInstructions = (instructions) => {
+        this.setState({ instructions })
     }
 
     render() {
@@ -106,10 +117,12 @@ export default class AddressFormScreen extends Component {
                         </Box>
                         <Input placeholder="Instruction for delivery (optional)"
                             containerStyle={{ height: 100 }}
+                            value={this.state.instructions}
+                            onChangeText={this._onChangeInstructions}
                             multiline />
                     </Box>
 
-                    <Button disabled={!this.address} disabledStyle={styles.buttonDisabled} onPress={this.saveAddress}>
+                    <Button disabled={!this.state.address} disabledStyle={styles.buttonDisabled} onPress={this.saveAddress}>
                         <Text bold color="white">
                             Save
                         </Text>

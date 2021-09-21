@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet, ScrollView } from 'react-native';
 import { Box, Text } from 'react-native-design-utility';
 import { EvilIcons } from '@expo/vector-icons';
 import { inject, observer } from 'mobx-react/native'
 
 import { theme } from '../constants/theme';
 import Button from '../commons/Button';
+import AddressComponent from "../components/AddressComponent";
 
 @inject('authStore')
 @observer
@@ -44,7 +45,18 @@ export default class AddressesScreen extends Component {
         }
         return ( <Box f={1} center bg="white" px="md">
                 <StatusBar barStyle="dark-content" />
-                <Text>Hello</Text>
+                <Box w="100%" mt={20}>
+                    <Button style={styles.button} onPress={this.handleAddAddressPress}>
+                        <Text bold color="white">Add address</Text>
+                    </Button>
+                </Box>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollViewStyle}>
+                    {
+                    this.props.authStore.info.addresses.map((address, i) => (
+                        <AddressComponent key={i} {...address}/>
+                    ))
+                    }
+                </ScrollView>
             </Box>
         )
 
@@ -54,5 +66,9 @@ export default class AddressesScreen extends Component {
 const styles = StyleSheet.create({
     button: {
         backgroundColor: theme.color.green
+    },
+    scrollViewStyle: {
+        flex: 1,
+        width: '100%',
     }
 })

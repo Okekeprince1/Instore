@@ -9,6 +9,7 @@ export default class LocationItem extends Component {
     handlePress = async () => {
         try {
             const res = await this.props.fetchDetails(this.props.place_id);
+            console.log("resulting address", res)
             this.props.searchAddress(res);
 
         } catch (error) {

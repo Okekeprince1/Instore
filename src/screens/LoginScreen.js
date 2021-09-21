@@ -62,6 +62,8 @@ export default class loginScreen extends Component {
 
             const token = await FacebookApi.loginAsync();
 
+            await this.props.authStore.login(token, 'FACEBOOK');
+
             console.log('token', token);
         } catch (error) {
 

@@ -55,6 +55,14 @@ export default class ProfileScreen extends Component {
         headerLeft: <CloseBtn left size={25} onPress={() => navigation.goBack(null)} />
     })
 
+    onLogoutPress = async() => {
+        try {
+            await this.props.authStore.logout();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     render() {
         const { authStore } = this.props
         return (
@@ -87,7 +95,7 @@ export default class ProfileScreen extends Component {
                         </ListColumn>
                     ))}
 
-                    <TouchableOpacity style={styles.logoutBtn}>
+                    <TouchableOpacity onPress={this.onLogoutPress} style={styles.logoutBtn}>
                         <Text bold color="green">
                             Log Out
                         </Text>

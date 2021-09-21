@@ -44,7 +44,14 @@ export const AuthStore = types.model('AuthStore', {
             console.log('error', error)
         }
     }),
-
+    logout: flow(function* (){
+        try{
+            yield AsyncStorage.removeItem(TOKEN_KEY)
+            NavigationService.navigate('Auth');
+        }catch(error){
+            NavigationService.navigate('Auth');
+        }
+    }),
     login: flow(function* (providerToken, provider) {
         try {
             const res = yield customerApi.post({

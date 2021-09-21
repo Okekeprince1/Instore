@@ -14,6 +14,7 @@ const loginAsync = async () => {
         });
 
         if (result.type === 'success') {
+            console.log(result.accessToken);
             return Promise.resolve(result.accessToken);
         }
 

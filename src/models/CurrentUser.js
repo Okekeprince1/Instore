@@ -1,7 +1,7 @@
 import { flow, types, getParent } from 'mobx-state-tree';
 import get from 'lodash.get';
 
-import { baseApi } from '../api/Api';
+import { baseApi, customerApiAddress } from '../api/Api';
 import { UserAddressModel } from './UserAddresses';
 
 export const CurrentUserModel = types.model('UserInfo', {
@@ -20,24 +20,38 @@ export const CurrentUserModel = types.model('UserInfo', {
 })).actions(self => ({
     createAddress: flow(function* (data) {
         try {
-            const res = baseApi.url('/addresses')
+            data.user = self.auth.info["_id"];
+            const res = yield baseApi.url("api/v1/addresses")
                 .auth(`Bearer ${self.auth.authToken}`)
-                .post({ data }).json()
-
-            if (typeof res.address === 'null') {
-                // const address = UserAddressModel.create({
-                //     ...res.address,
-                //     geo: {
-                //         lng: get(res.address, ['geo', 'coords', 0]),
-                //         lat: get(res.address, ['geo', 'coords', 1])
-                //     }
-                // })
-                // self.addresses.push(address)
-                // console.log('new add', self.addresses)
-
-                console.log('True')
+                .post({ data }).json();
+            console.log(res);
+            if (res.address) {
+                const address = UserAddressModel.create({
+                    ...res.address,
+                    geo: {
+                        lng: get(res.address, ['geo', 'coords', 0]),
+                        lat: get(res.address, ['geo', 'coords', 1])
+                    }
+                })
+                self.addresses.push(address)
             }
 
+        } catch (error) {
+            throw error
+        }
+    }),
+    getAddress: flow(function* (){
+
+        try {
+            const res = yield baseApi.url("api/v1/addresses/me")
+            .auth(`Bearer ${self.auth.authToken}`)
+            .get().json();
+
+            console.log("resulting address", res["addresses"]);
+            
+            if(res["addresses"]){
+                self.addresses.push(...res["addresses"]); 
+            }
         } catch (error) {
             throw error
         }

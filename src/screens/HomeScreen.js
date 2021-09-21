@@ -8,6 +8,8 @@ import DealCarousel from '../components/DealCaroussel';
 
 import ProfileBtn from '../commons/ProfileBtn';
 
+import { observer, inject } from 'mobx-react/native';
+
 const categories = [
     {
         id: 1,
@@ -32,6 +34,8 @@ const categories = [
 
 const NUM_COLUMNS = 2;
 
+@inject('authStore')
+@observer
 export default class HomeScreen extends Component {
 
     renderItem = ({item, index}) => {
@@ -57,6 +61,14 @@ export default class HomeScreen extends Component {
     static navigationOptions = {
         title: 'InStore',
         headerLeft: <ProfileBtn />
+    }
+
+    componentDidMount () {
+        this._getAddress();
+    }
+
+    _getAddress = async() => {
+        await this.props.authStore.info.getAddress();
     }
 
     render() {

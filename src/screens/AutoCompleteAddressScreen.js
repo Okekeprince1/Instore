@@ -9,8 +9,9 @@ import LocationItem from '../components/LocationItem';
 
 const AutoCompleteAddressScreen = ({ navigation }) => (
     <Box f={1} bg="white" >
-        <GoogleAutoComplete apiKey={GOOGLE_API_KEY} components="country:ca">
+        <GoogleAutoComplete components="country:ng" apiKey={GOOGLE_API_KEY} debounce={300}>
             {({handleTextChange, inputValue, locationResults, isSearching, fetchDetails}) => (
+                
                 <React.Fragment>
                     <Box h={40} width="100%" center mt={10}>
                         <Box bg="greyLighter" radius={6} h="90%" w="90%" p={8}>
@@ -29,8 +30,8 @@ const AutoCompleteAddressScreen = ({ navigation }) => (
                 </Box>
             ) : (
                 <ScrollView style={styles.list}>
-                    {locationResults.map(location => (
-                        <LocationItem key={location.id}
+                    {locationResults.map((location, i) => (
+                        <LocationItem key={String(i)}
                          {...location}
                          fetchDetails={fetchDetails}
                          searchAddress={navigation.getParam('searchAddress')}/>
